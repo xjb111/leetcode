@@ -1,0 +1,98 @@
+/*Today is 7th of May,2022.
+ *The website of daily promble is https://leetcode.cn/problems/minimum-genetic-mutation/.
+ *Have a good day!🌻🌻🌻
+ */
+class Solution {
+public:
+    int minDis=11;
+    bool judge(string a,string b)
+    {
+        int count=0;
+        for(int i=0;i<8;i++)
+        {
+            if(a[i]!=b[i])
+            {
+                count++;
+            }
+        }
+        return count==1;
+    }
+    void createAdj(vector<vector<int>>& Adj,vector<string>& bank)
+    {
+        for(int i=0;i<bank.size();i++)
+        {
+            for(int j=i+1;j<bank.size();j++)
+            {
+                if(judge(bank[i],bank[j]))
+                {
+                    Adj[i].emplace_back(j);
+                    Adj[j].emplace_back(i);
+                }
+            }
+        }
+    }
+    void dfs(int start,int end,vector<vector<int>>& Adj,vector<bool>& vis,int dis)
+    {
+        if(start==end)
+        {
+            if(minDis>dis)
+            {
+                minDis=dis;
+            }
+        }
+        else
+        {
+            for(int i=0;i<Adj[start].size();i++)
+            {
+                if(!vis[Adj[start][i]])
+                {
+                    //标记为访问过
+                    vis[Adj[start][i]]=true;
+                    dfs(Adj[start][i],end,Adj,vis,dis+1);
+                    vis[Adj[start][i]]=false;
+                }
+            }
+        }
+    }
+    int minMutation(string start, string end, vector<string>& bank) {
+        //假设start和end之间的差别有k处，由于一次只能改变一个字符，因此至少需要k步才能从start变到end。
+        //bank中的每个序列至多使用一次
+        //有点类似于图的算法，寻找最短路径
+        //先找到各序列之间的相邻关系(相差一个字符)
+        //先遍历bank，进行初步的数据处理
+        bool haveStart=false;
+        bool haveEnd=false;
+        int indexStart=0;
+        int indexEnd=0;
+        for(int i=0;i<bank.size();i++)
+        {
+            if(bank[i]==start)
+            {
+                haveStart=true;
+                indexStart=i;
+            }
+            if(bank[i]==end)
+            {
+                haveEnd=true;
+                indexEnd=i;
+            }
+        } 
+        if(haveEnd==false)
+        {
+            //bank中没有终点
+            return -1;
+        }
+        if(haveStart==false)
+        {
+            //防止重复加入起点
+            bank.emplace_back(start);
+            indexStart=bank.size()-1;
+        }
+        vector<vector<int>>Adj(bank.size());
+        vector<bool>vis(bank.size(),false);
+        createAdj(Adj,bank);
+        vis[indexStart]=true;
+        dfs(indexStart,indexEnd,Adj,vis,0);
+        return minDis>10?-1:minDis;
+    }
+};
