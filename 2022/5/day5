@@ -1,1 +1,42 @@
-
+/*Today is 5th of May,2022.
+ *The website of daily promble is https://leetcode.cn/problems/subarray-product-less-than-k/.
+ *Have a good day!🌾🌾🌾
+ */
+class Solution {
+public:
+    int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        //暴力算法的时间复杂度为O(n^2),显然无法通过
+        //采用双指针left和right:若[left,right]中元素的乘积小于k,则right指针向右遍历直到乘积大于等于k;否则left指针向右遍历直到乘积小于k.
+        int left=0,right=0;
+        int multip=1;
+        int count=0;
+        while(right<nums.size())
+        {
+            if(nums[right]>=k)
+            {
+                right++;
+                left=right;
+                multip=1;
+            }
+            else
+            {
+                multip*=nums[right];
+                if(multip<k)
+                {
+                    right++;
+                    count+=right-left;
+                }
+                else
+                {
+                    while(multip>=k)
+                    {
+                        multip/=nums[left];
+                        left++;
+                    }
+                    multip/=nums[right];
+                }
+            }
+        }
+        return count;
+    }
+};
