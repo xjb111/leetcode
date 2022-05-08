@@ -1,1 +1,19 @@
-
+/*Today is 4th of May,2022.
+ *The website of daily promble is https://leetcode.cn/problems/find-the-winner-of-the-circular-game/.
+ *Have a good day!🌻🌻🌻
+ */
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+        //约瑟夫环需要从0开始编号，这样才能连续
+        //迭代公式为f(n,k)=(f(n-1,k)+k)%n
+        //边界条件为f(1,k)=0
+        int index=0;
+        for(int i=2;i<=n;i++)
+        {
+            index=(index+k)%i;
+        }
+        //约瑟夫环编号与实际编号相差1
+        return index+1;
+    }
+};
