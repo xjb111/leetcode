@@ -1,1 +1,42 @@
-/*Today is 
+/*Today is 8th May,2022.
+ *The website of today's daily promble is https://leetcode.cn/problems/find-all-duplicates-in-an-array/.
+ *Have a good day!🌸🌸🌸
+ */
+class Solution {
+public:
+    vector<int> findDuplicates(vector<int>& nums) {
+        vector<int>twice;
+        //由于只能使用常量的额外空间，直接在原地进行操作
+        //由于整数范围限制为1~n，因此可以将整数1~n映射到数组的下标0~n-1
+        //将数组nums由记录元素值更改为记录元素个数的数组
+        int index=0,temp=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            //nums[i]为正整数是元素值，为0或负整数是元素i+1的个数
+            if(nums[i]>0)
+            {
+                //index是数组nums存储元素nums[i]个数的下标
+                index=nums[i]-1;
+                nums[i]=0;
+                while(nums[index]>0)
+                {
+                    //把这个位置的元素值保护起来
+                    temp=nums[index]-1;
+                    //再改为记录元素个数的
+                    nums[index]=-1;
+                    //接力下去
+                    index=temp;
+                }
+                nums[index]--;
+            }
+        }
+        for(int i=0;i<nums.size();i++)
+        {
+            if(nums[i]<-1)
+            {
+                twice.emplace_back(i+1);
+            }
+        }
+        return twice;
+    }
+};
