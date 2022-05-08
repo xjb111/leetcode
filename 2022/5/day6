@@ -1,1 +1,25 @@
+/*Today is 6th of May,2022.
+ *The website of daily promble is https://leetcode.cn/problems/number-of-recent-calls/.
+ *Have a good day!🌾🌾🌾
+ */
+class RecentCounter {
+private:
+    vector<int>nums;
+public:
+    RecentCounter() {
 
+    }
+    
+    int ping(int t) {
+        //严格递增，直接在后面插入
+        nums.emplace_back(t);
+        int index=lower_bound(nums.begin(),nums.end(),t-3000)-nums.begin();
+        return nums.size()-index;
+    }
+};
+
+/**
+ * Your RecentCounter object will be instantiated and called as such:
+ * RecentCounter* obj = new RecentCounter();
+ * int param_1 = obj->ping(t);
+ */
