@@ -1,1 +1,70 @@
-
+/*Today is 3th of May,2022.
+ *The website of daily promble is https://leetcode.cn/problems/reorder-data-in-log-files/.
+ *Have a good day!🌴🌴🌴
+ */
+class Solution {
+public:
+    bool judge(string a)
+    {
+        int i=0;
+        while(a[i]!=' ')
+        {
+            i++;
+        }
+        if(a[i+1]>='a' && a[i+1]<='z')
+        {
+            //字母日志
+            return true;
+        }
+        else
+        {
+            //数字日志
+            return false;
+        }
+    }
+    int firstStep(vector<string>& logs)
+    {
+        int index=logs.size()-1;
+        for(int i=logs.size()-1;i>=0;i--)
+        {
+            if(!judge(logs[i]))
+            {
+                swap(logs[index],logs[i]);
+                index--;
+            }
+        }
+        return index+1;
+    }
+    static bool cmp(const string& a,const string& b)
+    {
+        //两个字母日志
+        int i=0,j=0;
+        while(a[i]!=' ')
+        {
+            i++;
+        }
+        while(b[j]!=' ')
+        {
+            j++;
+        }
+        string flag1=a.substr(0,i);
+        string flag2=b.substr(0,j);
+        string s1=a.substr(i,a.length()-i);
+        string s2=b.substr(j,b.length()-j);
+        if(s1!=s2)
+        {
+            return s1<s2;
+        }
+        else
+        {
+            return flag1<flag2;
+        }
+    }
+    vector<string> reorderLogFiles(vector<string>& logs) {
+        //首先要判断是字母日志还是数字日志
+        //将所有数字日志调到向量末尾
+        int index=firstStep(logs);
+        sort(logs.begin(),logs.begin()+index,cmp);
+        return logs;
+    }
+};
