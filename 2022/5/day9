@@ -1,1 +1,31 @@
 /*Today is 9th May,2022.
+ *The website of today's daily promble is https://leetcode.cn/problems/di-string-match/.
+ *Have a good day!🚀🚀🚀
+ */
+class Solution {
+public:
+    vector<int> diStringMatch(string s) {
+        //[0,n]中的每个整数可以使用一次
+        //假设perm[0]为0(虽然最后不一定是0),记录perm[0]~perm[i](i:0~n)的最大值max和最小值min.对于perm[i+1],如果s[i]是'I',perm[i+1]就取max+1,并更新max;如果s[i]是'D',perm[i+1]就取min-1,并更新min.显然perm数组取到了区间[min,max]中的所有数,且max-min=n.显然区间[min,max]可以映射到区间[0,n],两者之间只差一个偏差值.根据min和0计算一个偏差值,用偏差值对perm数组进行修正.
+        int n=s.length();
+        vector<int>perm(n+1,0);
+        int min=0,max=0;
+        for(int i=0;i<n;i++)
+        {
+            if(s[i]=='I')
+            {
+                perm[i+1]=++max;
+            }
+            else
+            {
+                perm[i+1]=--min;
+            }
+        }
+        int diff=-min;
+        for(int i=0;i<n+1;i++)
+        {
+            perm[i]+=diff;
+        }
+        return perm;
+    }
+};
